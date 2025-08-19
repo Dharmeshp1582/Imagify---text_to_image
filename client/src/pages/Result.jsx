@@ -1,9 +1,68 @@
-import React from 'react'
+import React, { use, useState } from "react";
+import { assets } from "../assets/assets";
 
 const Result = () => {
-  return (
-    <div>Result</div>
-  )
-}
+  const [image, setImage] = useState(assets.sample_img_1);
+  const [isImageLoaded, setIsImageLoaded] = useState(false);
+  const [loading,setLoading] = useState(false); 
+  const [input,setInput] = useState('');
 
-export default Result
+  const onSubmitHandler = (e) => {
+   e.preventDefault();
+   try {
+    
+    
+   } catch (error) {
+    console.log(error)
+   }
+  }
+
+  return (
+    <form onSubmit={onSubmitHandler} className="flex flex-col items-center justify-center w-full min-h-[90vh] bg-gray-100">
+      <div>
+        <div className="relative">
+          <img src={image} alt="" className="max-w-sm rounded" />
+          <span className={`absolute bottom-0 left-0 h-1 bg-blue-500 ${loading ? "w-full transition-all duration-[10s]" : "w-0"} `} />
+        </div>
+        <p className={!loading ? "hidden" : ""}>Loading....</p>
+      </div>
+
+      {!isImageLoaded && (
+        <div
+          className="flex w-full max-w-xl bg-neutral-500 text-white text-sm p-0.5 mt-10 rounded-full
+      "
+        >
+          <input onChange={e => setInput(e.target.value)} value={input} 
+            type="text"
+            placeholder="Describe what you want to generate..."
+            className="flex-1 bg-transparent outline-none ml-8 max-sm:w-20 placeholder-color"
+          />
+          <button
+            type="submit"
+            className="bg-zinc-900 text-white px-10 py-3 sm:px-16  rounded-full "
+          >
+            Generate
+          </button>
+        </div>
+      )}
+
+
+{isImageLoaded && (
+      <div className="flex flex-wrap gap-2 items-center justify-center mt-10 rounded-full text-sm p-0.5">
+        <p onClick={()=> {setIsImageLoaded(false)}} className="bg-transparent border border-zinc-900 text-black px-8 py-3 rounded-full cursor-pointer">
+          Generate Another
+        </p>
+        <a
+          href={image}
+          download
+          className=" bg-zinc-900  px-10 py-3 rounded-full cursor-pointer placeholder-color"
+        >
+          Download
+        </a>
+      </div>
+    )}
+    </form>
+  );
+};
+
+export default Result;
