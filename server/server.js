@@ -4,6 +4,7 @@ import 'dotenv/config'
 import connectDb from './config/db.js';
 import userRouter from './routes/user.route.js';
 import cookieParser from 'cookie-parser';
+import imageRouter from './routes/image.route.js';
 
 const PORT = process.env.PORT || 4000;
 const app = express();
@@ -17,6 +18,7 @@ connectDb();
 //localhost:4000/api/user/register
 //localhost:4000/api/user/login
 app.use('/api/user', userRouter);
+app.use('/api/image', imageRouter);
 app.get('/', (req, res) => {
   res.send('Hello World!');
 });

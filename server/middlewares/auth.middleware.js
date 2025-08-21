@@ -2,24 +2,34 @@ import jwt from "jsonwebtoken";
 
 export const userAuth = (req, res, next) => {
   try {
-    // 🔥 Check token from cookies first
-    const token = req.cookies.token || req.headers.authorization?.split(" ")[1];
+    // ✅ Prefer cookie token, fallback to Bearer
+    let token = req.cookies?.token;
 
-    if (!token) {
-      return res
-        .status(400)
-        .json({ success: false, message: "No token provided" });
+    if (!token && req.headers.authorization) {
+      const [scheme, authToken] = req.headers.authorization.split(" ");
+      if (scheme === "Bearer") {
+        token = authToken;
+      }
     }
 
+    if (!token) {
+      return res.status(401).json({
+        success: false,
+        message: "Authentication required: No token provided",
+      });
+    }
+
+    // ✅ Verify JWT
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-    // Attach userId to request
+    // ✅ Attach userId to request for later use
     req.userId = decoded.id;
 
     next();
   } catch (error) {
-    return res
-      .status(401)
-      .json({ success: false, message: "Invalid or expired token" });
+    return res.status(401).json({
+      success: false,
+      message: "Invalid or expired token",
+    });
   }
 };
