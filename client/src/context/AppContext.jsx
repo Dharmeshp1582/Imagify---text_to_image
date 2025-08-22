@@ -20,7 +20,7 @@ const [credit,setCredit] = useState(false);
   const loadCreditsData = async () => {
   try {
     const { data } = await axios.get(backendUrl + '/api/user/credits', {
-      headers: { Authorization: `Bearer ${token}` },
+      headers: { Authorization: `Bearer ${token}` }, withCredentials: true
     });
     if (data.success){ setCredit(data.credits);
       setUser(data.user);
@@ -35,7 +35,7 @@ const [credit,setCredit] = useState(false);
   const generateImage = async (prompt) => {  
    try {
      const { data } = await axios.post(backendUrl + '/api/image/generate-image', { prompt }, {
-       headers: { Authorization: `Bearer ${token}` },
+       headers: { Authorization: `Bearer ${token}` }, withCredentials: true
      });
      if (data.success) {
        // Handle successful image generation

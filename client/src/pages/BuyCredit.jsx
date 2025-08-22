@@ -29,7 +29,7 @@ const BuyCredit = () => {
           response,
           {
             headers: { Authorization: `Bearer ${token}` },
-          }
+          }, { withCredentials: true }
         );
         console.log("Backend verification response:", verifyResponse.data); // 🔹 log backend response
 
@@ -62,7 +62,7 @@ const BuyCredit = () => {
       const { data } = await axios.post(
         backendUrl + "/api/user/pay-razor",
         { planId }, // only planId
-        { headers: { Authorization: `Bearer ${token}` } }
+        { headers: { Authorization: `Bearer ${token}` }, withCredentials: true }
       );
 
       if (data.success) {
